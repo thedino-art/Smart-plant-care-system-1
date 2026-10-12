@@ -1,0 +1,75 @@
+class SmartPlantWateringSystem:
+    def __init__(self, soil_moisture, water_level):
+        self.__soil_moisture = soil_moisture
+        self.__water_level = water_level
+
+    # Getter methods
+    def get_soil_moisture(self):
+        return self.__soil_moisture
+
+    def get_water_level(self):
+        return self.__water_level
+
+    # Setter methods with validation
+    def set_soil_moisture(self, moisture):
+        if 0 <= moisture <= 100:
+            self.__soil_moisture = moisture
+        else:
+            print("Invalid soil moisture value!")
+
+    def set_water_level(self, level):
+        if 0 <= level <= 100:
+            self.__water_level = level
+        else:
+            print("Invalid water level value!")
+
+    # Check if sensor readings are valid
+    def readings_are_valid(self):
+        return (
+            0 <= self.__soil_moisture <= 100
+            and 0 <= self.__water_level <= 100
+        )
+
+    # Decide whether the plant needs watering
+    def check_plant(self):
+        if not self.readings_are_valid():
+            print("Invalid sensor values. Check the sensors.")
+
+        elif self.__soil_moisture < 30:
+            if self.__water_level > 0:
+                print("Soil is too dry. Adding water...")
+                print("Check soil moisture again.")
+            else:
+                print("Water tank is empty. Please refill it.")
+
+        else:
+            print("Soil moisture is sufficient. Keep monitoring.")
+
+    # Display sensor readings
+    def display_readings(self):
+        print("Soil moisture:", self.get_soil_moisture(), "%")
+        print("Water level:", self.get_water_level(), "%")
+
+
+def main():
+    print("=== Smart Plant Watering System ===")
+
+    try:
+        soil = float(input("Enter soil moisture (0-100%): "))
+        water = float(input("Enter water level (0-100%): "))
+
+        if not (0 <= soil <= 100 and 0 <= water <= 100):
+            print("Invalid values! Enter percentages from 0 to 100.")
+            return
+
+        plant = SmartPlantWateringSystem(soil, water)
+
+        plant.display_readings()
+        plant.check_plant()
+
+    except ValueError:
+        print("Invalid input! Please enter numbers.")
+
+
+if __name__ == "__main__":
+    main()
